@@ -1,0 +1,70 @@
+package com.lvyouwangzhan.service;
+
+import com.lvyouwangzhan.mapper.OrderMapper;
+import com.lvyouwangzhan.pojo.Order;
+import com.lvyouwangzhan.pojo.OrderInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+@Service
+public class OrderService {
+
+    @Autowired
+    private OrderMapper orderMapper;
+
+    public Map<String, Object> listOrderByUserId(Integer user_id) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            List<Order> orders = orderMapper.listOrderByUserId(user_id);
+
+            if (orders.size()==0) {
+                map.put("code", "501");
+                map.put("msg", "获取订单列表失败");
+                return map;
+            }
+
+            for (Order order : orders) {
+                OrderInfo info = orderMapper.getInfoByRoomId(order.getRoom_id());
+                order.setOrderInfo(info);
+            }
+
+            map.put("code", "200");
+            map.put("msg", "获取订单列表成功");
+            map.put("data", orders);
+            return map;
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("code", "500");
+            map.put("msg", "后端程序报错");
+            return map;
+        }
+    }
+
+    public Map<String, Object> insertOrder(Integer user_id, Integer room_id, Double money) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            int rows = orderMapper.insertOrder(user_id, room_id, money);
+
+            if (rows==0) {
+                map.put("code", "501");
+                map.put("msg", "插入订单失败");
+                return map;
+            } else {
+                map.put("code", "200");
+                map.put("msg", "插入订单成功");
+                return map;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("code", "500");
+            map.put("msg", "后端程序报错");
+            return map;
+        }
+    }
+}
