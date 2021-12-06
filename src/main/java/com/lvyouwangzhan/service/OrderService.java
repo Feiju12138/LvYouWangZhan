@@ -1,11 +1,14 @@
 package com.lvyouwangzhan.service;
 
 import com.lvyouwangzhan.mapper.OrderMapper;
+import com.lvyouwangzhan.mapper.UserMapper;
 import com.lvyouwangzhan.pojo.Order;
 import com.lvyouwangzhan.pojo.OrderInfo;
+import com.lvyouwangzhan.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +19,9 @@ public class OrderService {
 
     @Autowired
     private OrderMapper orderMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     public Map<String, Object> listOrderByUserId(Integer user_id) {
         Map<String, Object> map = new HashMap<>();
@@ -45,10 +51,20 @@ public class OrderService {
         }
     }
 
-    public Map<String, Object> insertOrder(Integer user_id, Integer room_id, Double money) {
+    public Map<String, Object> insertOrder(Integer user_id, Integer room_id, Double money, Date start_time, Date end_time) {
         Map<String, Object> map = new HashMap<>();
         try {
-            int rows = orderMapper.insertOrder(user_id, room_id, money);
+            // 检测用户金额是否足够
+            User user = userMapper.listUserById(user_id);
+            if (user.getMoney()<money) {
+                map.put("code", "502");
+                map.put("msg", "金额不足");
+                return map;
+            }
+            // 扣除用户金额
+            user.setMoney(user.getMoney()-money);
+            // 插入订单
+            int rows = orderMapper.insertOrder(user_id, room_id, money, start_time, end_time);
 
             if (rows==0) {
                 map.put("code", "501");

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.Map;
 
 @RestController
@@ -32,8 +33,8 @@ public class OrderController {
      * @return
      */
     @RequestMapping("/insertOrder")
-    public Map<String, Object> insertOrder(Integer user_id, Integer room_id, Double money) {
-        return orderService.insertOrder(user_id, room_id, money);
+    public Map<String, Object> insertOrder(Integer user_id, Integer room_id, Double money, Date start_time, Date end_time) {
+        return orderService.insertOrder(user_id, room_id, money, start_time, end_time);
     }
 
 }

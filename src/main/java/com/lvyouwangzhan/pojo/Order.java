@@ -13,5 +13,7 @@ public class Order {
     private Date create_time;
     private Double money;
     private OrderInfo orderInfo;
+    private Date start_time;
+    private Date end_time;
 
 }

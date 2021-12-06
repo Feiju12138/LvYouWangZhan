@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,6 @@ public interface OrderMapper {
     @Select("SELECT hotel.id AS hotel_id, hotel.name AS hotel_name, room.id AS room_id, room.name AS room_name, room.img AS room_img, room.money AS room_money, room.information AS room_information FROM hotel, room WHERE room.hotel_id=hotel.id AND room.id=#{room_id}")
     OrderInfo getInfoByRoomId(Integer room_id);
 
-    @Insert("INSERT INTO orders VALUES(null, #{user_id}, #{room_id}, now(), #{money})")
-    Integer insertOrder(Integer user_id, Integer room_id, Double money);
+    @Insert("INSERT INTO orders VALUES(null, #{user_id}, #{room_id}, now(), #{money}, #{start_time}, #{end_time})")
+    Integer insertOrder(Integer user_id, Integer room_id, Double money, Date start_time, Date end_time);
 }

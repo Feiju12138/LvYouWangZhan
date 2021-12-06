@@ -76,7 +76,7 @@ public class UserController {
      * @param id 用户编号
      * @return
      */
-    @RequestMapping("/listUserAllById")
+    @RequestMapping("/listUserById")
     public Map<String, Object> listUserById(Integer id) {
         return userService.listUserById(id);
     }
