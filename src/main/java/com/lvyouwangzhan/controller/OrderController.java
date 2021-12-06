@@ -33,7 +33,7 @@ public class OrderController {
      * @return
      */
     @RequestMapping("/insertOrder")
-    public Map<String, Object> insertOrder(Integer user_id, Integer room_id, Double money, Date start_time, Date end_time) {
+    public Map<String, Object> insertOrder(Integer user_id, Integer room_id, Double money, String start_time, String end_time) {
         return orderService.insertOrder(user_id, room_id, money, start_time, end_time);
     }
 

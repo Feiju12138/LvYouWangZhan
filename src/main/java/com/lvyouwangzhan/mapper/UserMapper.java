@@ -38,4 +38,7 @@ public interface UserMapper {
 
     @Update("UPDATE user SET password=#{password} WHERE id=#{id}")
     Integer updateUserPassword(Integer id, String password);
+
+    @Update("UPDATE user SET money=#{money} WHERE id=#{id}")
+    Integer updateUserMoney(Integer id, Double money);
 }
